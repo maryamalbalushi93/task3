@@ -1,0 +1,75 @@
+<div class="container text-center">
+    <h1>Questionnaire</h1>
+  </div>
+  
+  <div class="container mt-5">
+    <div *ngIf="!userSelected && !formSubmitted" class="row justify-content-center mb-3">
+      <div class="col-md-6">
+        <div class="select-container">
+          <label for="userSelect" class="form-label">Select User</label>
+          <select [(ngModel)]="selectedUser" class="form-select" id="userSelect">
+            <option *ngFor="let user of users" [value]="user">{{user}}</option>
+          </select>
+          <button (click)="selectUser()" [disabled]="!selectedUser" class="btn btn-primary mt-3">
+            Select User
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="userSelected && currentQuestionIndex < questions.length && !formSubmitted" class="row mb-3">
+      <div class="col-md-8">
+        <div class="question">
+          <p class="question-number">{{currentQuestionIndex + 1}}. {{questions[currentQuestionIndex].question}}</p>
+          <div class="options" *ngFor="let option of questions[currentQuestionIndex].options">
+            <label class="form-check-label">
+              <input type="radio" name="q{{currentQuestionIndex}}" [(ngModel)]="selectedOptions[currentQuestionIndex]" [value]="option" class="form-check-input">
+              {{option}}
+            </label><br>
+          </div>
+        </div>
+        <div class="button-container text-center">
+          <button *ngIf="currentQuestionIndex !== questions.length - 1" (click)="nextQuestion()" [disabled]="!selectedOptions[currentQuestionIndex]" class="btn btn-primary">
+            Next Question
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="currentQuestionIndex === questions.length - 1 && selectedOptions[currentQuestionIndex] && !formSubmitted" class="row mb-3">
+      <div class="col-md-8">
+        <div class="button-container text-center">
+          <button (click)="submit()" class="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="formSubmitted && showResults" class="row mb-3">
+      <div class="col-md-8">
+        <div class="results">
+          <p>User Name: {{selectedUser}}</p>
+          <p>Your Score: {{score}}/{{questions.length}}</p>
+          <p>Correct Answers:</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Question</th>
+                <th>Correct Answer</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let q of questions; let i = index">
+                <td [ngClass]="{'green': selectedOptions[i] === q.answer, 'red': selectedOptions[i] !== q.answer}">
+                  {{i + 1}}
+                </td>
+                <td>{{q.answer}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  

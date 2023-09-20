@@ -1,7 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { ButtonNavigationComponent } from './button-navigation/button-navigation.component';
+
+const routes: Routes = [
+  { path: '', component: ButtonNavigationComponent }, // Set UserSelectionComponent as the default
+
+  
+
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
